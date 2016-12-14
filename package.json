@@ -1,0 +1,13 @@
+{
+  "name": "just-log-me-baby",
+  "version": "0.0.1",
+  "description": "Simple logger.",
+  "main": "app.js",
+  "author": "Jonathan Darling",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "redis": "^2.6.3"
+  }
+}
