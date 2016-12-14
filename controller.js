@@ -16,11 +16,12 @@ module.exports = class Controller {
   registerRoutes () {
     this._app.post('/log/:database', (request, response) => {
       const log = {
-        databse: request.params.database,
+        database: request.params.database,
         content: request.body
       }
 
       this._redisClient.lpush(this._listKey, JSON.stringify(log), () => {
+        console.log(`Log written to Redis:\n${JSON.stringify(log)}\n\n`)
         response.status(200).end()
       })
     })

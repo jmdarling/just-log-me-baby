@@ -15,6 +15,7 @@ app.listen(config.port, () => {
 // Redis.
 const redisClient = redis.createClient(config.redisUrl)
 redisClient.on('connect', () => {
+  console.log(`Connected to redis instance at ${config.redisUrl}\n\n`)
   const controller = new Controller(app, redisClient)
   controller.registerRoutes()
 })

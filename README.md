@@ -6,8 +6,8 @@
 
 ## What is it?
 A simple logging API. This app, accepts a post to ```/log/:database``` with content to log in the body. It will write
-this data to a Redis queue where consumers [Insert link to consumer repo here]() will pull items off and write them to
-wherever they should be written.
+this data to a Redis queue where consumers like [the mongo consumer](https://github.com/jmdarling/just-log-me-baby) will
+pull items off and write them to wherever they should be written.
 
 ## How do I use it?
 Set the PORT and REDIS_URL environment variables (also supports [dotenv](https://www.npmjs.com/package/dotenv)). The app
