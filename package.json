@@ -5,8 +5,12 @@
   "main": "app.js",
   "author": "Jonathan Darling",
   "license": "MIT",
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "redis": "^2.6.3"
   }
