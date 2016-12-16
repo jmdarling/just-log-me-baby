@@ -31,7 +31,7 @@ function bootstrap() {
     })
 
     // Start the app.
-    const controller = new Controller(app, redisClient)
+    const controller = new Controller(app, redisClient, config)
     controller.registerRoutes()
   })
 
