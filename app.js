@@ -7,17 +7,21 @@ const redis = require('redis')
 const config = require('./config')
 const Controller = require('./controller')
 
-if (cluster.isMaster) {
+if (config.instances > 1 && cluster.isMaster) {
   debug(`App starting. Creating ${config.instances} workers.`)
 
   for (let i = 0; i < config.instances; i++) {
     cluster.fork()
   }
 } else {
+  bootstrap()
+}
+
+function bootstrap() {
   const redisClient = redis.createClient(config.redisUrl)
 
   redisClient.on('connect', () => {
-    debug(`Worker ${process.pid} onnected to redis instance at ${config.redisUrl}`)
+    debug(`Worker ${process.pid} connected to redis instance at ${config.redisUrl}`)
 
     // Bootstrap express.
     const app = express()
