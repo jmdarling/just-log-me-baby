@@ -1,3 +1,5 @@
+const debug = require('debug')('controller')
+
 module.exports = class Controller {
 
   /**
@@ -5,14 +7,17 @@ module.exports = class Controller {
    *
    * @param {Express} app
    * @param {Redis}   redisClient
+   * @param {Object}  config
    */
-  constructor (app, redisClient) {
+  constructor (app, redisClient, config) {
     this._app = app
     this._redisClient = redisClient
-
-    this._listKey = 'simple_logger_queue'
+    this._config = config
   }
 
+  /**
+   * Registers API routes with Express.
+   */
   registerRoutes () {
     this._app.post('/log/:database', (request, response) => {
       const log = {
@@ -20,14 +25,22 @@ module.exports = class Controller {
         content: request.body
       }
 
-      this._redisClient.lpush(this._listKey, JSON.stringify(log), () => {
-        console.log(`Log written to Redis:\n${JSON.stringify(log)}\n\n`)
+      const stringifiedLog = JSON.stringify(log)
+
+      this._redisClient.lpush(this._config.redisListKey, stringifiedLog, error => {
+        if (error != null) {
+          console.error(`Worker ${process.pid} Redis LPUSH error:\n${JSON.stringify(error)}`)
+          response.status(500).send(error)
+          return
+        }
+
+        debug(`Worker ${process.pid} wrote log to Redis:\n${JSON.stringify(log)}`)
         response.status(200).end()
       })
     })
 
     this._app.get('*', (request, response) => {
-      response.send('💎')
+      response.send('💎ITS WORKING💎')
     })
   }
 }
