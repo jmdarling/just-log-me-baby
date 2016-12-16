@@ -40,7 +40,7 @@ module.exports = class Controller {
     })
 
     this._app.get('*', (request, response) => {
-      response.send('💎ITS WORKING💎')
+      response.send('💎ITS WORKING💎<br /><img src="https://media.giphy.com/media/9K2nFglCAQClO/200.gif" />')
     })
   }
 }
