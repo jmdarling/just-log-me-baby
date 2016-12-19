@@ -2,10 +2,22 @@ const bodyParser = require('body-parser')
 const cluster = require('cluster')
 const debug = require('debug')('app')
 const express = require('express')
+const fs = require('fs')
 const redis = require('redis')
 
 const config = require('./config')
 const Controller = require('./controller')
+
+// Allow writing stdout and stderr to files.
+if (config.stdoutFileDestination != null) {
+  const stdoutWriteStream = fs.createWriteStream(config.stdoutFileDestination)
+  process.stdout.write = stdoutWriteStream.write.bind(stdoutWriteStream)
+}
+
+if (config.stderrFileDestination != null) {
+  const stderrWriteStream = fs.createWriteStream(config.stderrFileDestination)
+  process.stderr.write = stderrWriteStream.write.bind(stderrWriteStream)
+}
 
 if (config.instances > 1 && cluster.isMaster) {
   debug(`App starting. Creating ${config.instances} workers.`)
@@ -17,7 +29,7 @@ if (config.instances > 1 && cluster.isMaster) {
   bootstrap()
 }
 
-function bootstrap() {
+function bootstrap () {
   const redisClient = redis.createClient(config.redisUrl)
 
   redisClient.on('connect', () => {
