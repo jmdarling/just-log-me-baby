@@ -18,6 +18,17 @@ module.exports = class Controller {
    * Registers API routes with Express.
    */
   registerRoutes () {
+    this._app.get('/queue/length', (request, response) => {
+      this._redisClient.llen(this._config.redisListKey, (error, length) => {
+        if (error != null) {
+          response.status(500).send(error)
+          return
+        }
+
+        response.send({queueLength: length})
+      })
+    })
+
     this._app.post('/log/:database', (request, response) => {
       const log = {
         database: request.params.database,
