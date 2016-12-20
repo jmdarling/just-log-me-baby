@@ -6,6 +6,6 @@ module.exports = {
   instances: process.env.JUST_LOG_ME_BABY_INSTANCES || os.cpus().length,
   redisListKey: process.env.JUST_LOG_ME_BABY_REDIS_LIST_KEY || 'just-log-me-baby-queue',
   redisUrl: process.env.REDIS_URL || '//localhost:6379',
-  stdoutFileDestination: process.env.JLMB_STDOUT_FILE_DESTINATION || null,
-  stderrFileDestination: process.env.JLMB_STDERR_FILE_DESTINATION || null
+  logFileDestination: process.env.JLMB_LOG_FILE_DESTINATION || null,
+  logSeverity: process.env.JLMB_LOG_SEVERITY || 'INFO'
 }

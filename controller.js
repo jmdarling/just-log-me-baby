@@ -1,5 +1,3 @@
-const debug = require('debug')('controller')
-
 module.exports = class Controller {
 
   /**
@@ -9,10 +7,11 @@ module.exports = class Controller {
    * @param {Redis}   redisClient
    * @param {Object}  config
    */
-  constructor (app, redisClient, config) {
+  constructor (app, redisClient, config, logger) {
     this._app = app
     this._redisClient = redisClient
     this._config = config
+    this._logger = logger
   }
 
   /**
@@ -29,12 +28,12 @@ module.exports = class Controller {
 
       this._redisClient.lpush(this._config.redisListKey, stringifiedLog, error => {
         if (error != null) {
-          console.error(`Worker ${process.pid} Redis LPUSH error:\n${JSON.stringify(error)}`)
+          this._logger.error(`Redis LPUSH error:\n${JSON.stringify(error)}`)
           response.status(500).send(error)
           return
         }
 
-        debug(`Worker ${process.pid} wrote log to Redis:\n${JSON.stringify(log)}`)
+        this._logger.debug(`Wrote log to Redis:\n${JSON.stringify(log)}`)
         response.status(200).end()
       })
     })
