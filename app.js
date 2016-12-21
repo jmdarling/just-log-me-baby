@@ -32,7 +32,15 @@ function bootstrap () {
 
     // Bootstrap express.
     const app = express()
+
     app.use(bodyParser.json())
+
+    app.use((request, response, next) => {
+      response.header('Access-Control-Allow-Origin', '*')
+      response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+      next()
+    })
+
     app.listen(config.port, () => {
       logger.info(`Listening on port ${config.port}`)
     })

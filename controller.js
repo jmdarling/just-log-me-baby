@@ -25,7 +25,7 @@ module.exports = class Controller {
           return
         }
 
-        response.send({queueLength: length})
+        response.send(JSON.stringify({queueLength: length}))
       })
     })
 
